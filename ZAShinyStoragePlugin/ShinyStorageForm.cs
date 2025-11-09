@@ -16,6 +16,7 @@ namespace ZAShinyStoragePlugin
         private readonly SAV9ZA? SAV;
         private readonly SCBlock? ShinyBlock;
         private int SelectedSlot = -1;
+        private bool SaveModified = false;
 
         private readonly GameStrings Strings = GameInfo.Strings;
 
@@ -34,6 +35,7 @@ namespace ZAShinyStoragePlugin
             var parent = FindForm();
             if (parent != null)
                 this.CenterToForm(parent);
+            FormClosed += ShinyStorageForm_FormClosed;
         }
 
         public void LoadPokemon()
@@ -266,6 +268,55 @@ namespace ZAShinyStoragePlugin
         {
             ShinyBlock!.ChangeData(data);
             SAV!.State.Edited = true;
+            SaveModified = true;
+        }
+
+        private void ShinyStorageForm_FormClosed(object? sender, FormClosedEventArgs e)
+        {
+            // Only reload if changes were made, and form is now fully closed
+            if (SaveModified)
+            {
+                ReloadSaveInPKHeX();
+            }
+        }
+
+        private void ReloadSaveInPKHeX()
+        {
+            try
+            {
+                Form? mainForm = null;
+
+                foreach (Form form in Application.OpenForms)
+                {
+                    if (form.GetType().Name == "Main")
+                    {
+                        mainForm = form;
+                        break;
+                    }
+                }
+
+                if (mainForm == null)
+                    return;
+               
+                var type = mainForm.GetType();
+                var openSavMethod = type.GetMethod("OpenSAV",
+                    System.Reflection.BindingFlags.NonPublic |
+                    System.Reflection.BindingFlags.Instance,
+                    null,
+                    [typeof(SaveFile), typeof(string)],
+                    null);
+
+                if (openSavMethod != null)
+                {
+                    var path = SAV!.Metadata.FilePath ?? string.Empty;
+                    openSavMethod.Invoke(mainForm, [SAV, path]);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log for debugging but don't bother the user - changes are applied, the Other tab is just not updated
+                System.Diagnostics.Debug.WriteLine($"Auto-reload failed: {ex.Message}");
+            }
         }
     }
 }
