@@ -1,4 +1,5 @@
-﻿using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
+﻿using System.Drawing;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Window;
 
 namespace ZAShinyStoragePlugin
 {
@@ -30,9 +31,14 @@ namespace ZAShinyStoragePlugin
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             gB_StoredShiny = new GroupBox();
+            lbl_Details = new Label();
+            lbl_Status = new Label();
             StoredShiny10 = new PictureBox();
             StoredShiny9 = new PictureBox();
+            btn_RemoveAll = new Button();
+            btn_RemoveSelected = new Button();
             StoredShiny8 = new PictureBox();
             StoredShiny7 = new PictureBox();
             StoredShiny6 = new PictureBox();
@@ -41,10 +47,9 @@ namespace ZAShinyStoragePlugin
             StoredShiny3 = new PictureBox();
             StoredShiny2 = new PictureBox();
             StoredShiny1 = new PictureBox();
-            btn_RemoveSelected = new Button();
-            btn_RemoveAll = new Button();
-            lbl_Details = new Label();
-            lbl_Status = new Label();
+            pbMap = new ZoomablePictureBox();
+            ShinyInfo = new ToolTip(components);
+            btnResetZoom = new Button();
             gB_StoredShiny.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)StoredShiny10).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StoredShiny9).BeginInit();
@@ -56,13 +61,18 @@ namespace ZAShinyStoragePlugin
             ((System.ComponentModel.ISupportInitialize)StoredShiny3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StoredShiny2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)StoredShiny1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pbMap).BeginInit();
             SuspendLayout();
             // 
             // gB_StoredShiny
             // 
-            gB_StoredShiny.Anchor = AnchorStyles.Top;
+            gB_StoredShiny.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            gB_StoredShiny.Controls.Add(lbl_Details);
+            gB_StoredShiny.Controls.Add(lbl_Status);
             gB_StoredShiny.Controls.Add(StoredShiny10);
             gB_StoredShiny.Controls.Add(StoredShiny9);
+            gB_StoredShiny.Controls.Add(btn_RemoveAll);
+            gB_StoredShiny.Controls.Add(btn_RemoveSelected);
             gB_StoredShiny.Controls.Add(StoredShiny8);
             gB_StoredShiny.Controls.Add(StoredShiny7);
             gB_StoredShiny.Controls.Add(StoredShiny6);
@@ -71,108 +81,155 @@ namespace ZAShinyStoragePlugin
             gB_StoredShiny.Controls.Add(StoredShiny3);
             gB_StoredShiny.Controls.Add(StoredShiny2);
             gB_StoredShiny.Controls.Add(StoredShiny1);
-            gB_StoredShiny.Location = new Point(8, 0);
+            gB_StoredShiny.Location = new Point(578, 2);
             gB_StoredShiny.Name = "gB_StoredShiny";
-            gB_StoredShiny.Size = new Size(517, 228);
+            gB_StoredShiny.Size = new Size(212, 600);
             gB_StoredShiny.TabIndex = 1;
             gB_StoredShiny.TabStop = false;
-            gB_StoredShiny.Text = "Stored Shiny Pokémon";
+            gB_StoredShiny.Text = "";
+            // 
+            // lbl_Details
+            // 
+            lbl_Details.AutoSize = true;
+            lbl_Details.Location = new Point(3, 529);
+            lbl_Details.Name = "lbl_Details";
+            lbl_Details.Size = new Size(203, 15);
+            lbl_Details.TabIndex = 4;
+            lbl_Details.Text = "Select a Pokémonto view its Location";
+            // 
+            // lbl_Status
+            // 
+            lbl_Status.AutoSize = true;
+            lbl_Status.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lbl_Status.Location = new Point(6, 0);
+            lbl_Status.Name = "lbl_Status";
+            lbl_Status.Size = new Size(125, 15);
+            lbl_Status.TabIndex = 5;
+            lbl_Status.Text = "Stored Shinies: 0 / 10";
             // 
             // StoredShiny10
             // 
             StoredShiny10.BackgroundImageLayout = ImageLayout.None;
             StoredShiny10.BorderStyle = BorderStyle.FixedSingle;
-            StoredShiny10.Location = new Point(414, 124);
+            StoredShiny10.Location = new Point(108, 430);
             StoredShiny10.Name = "StoredShiny10";
             StoredShiny10.Size = new Size(96, 96);
             StoredShiny10.SizeMode = PictureBoxSizeMode.Zoom;
             StoredShiny10.TabIndex = 9;
             StoredShiny10.TabStop = false;
             StoredShiny10.Click += Slot_Click;
+            StoredShiny10.MouseEnter += OnMouseHover;
             // 
             // StoredShiny9
             // 
             StoredShiny9.BackgroundImageLayout = ImageLayout.None;
             StoredShiny9.BorderStyle = BorderStyle.FixedSingle;
-            StoredShiny9.Location = new Point(312, 124);
+            StoredShiny9.Location = new Point(6, 430);
             StoredShiny9.Name = "StoredShiny9";
             StoredShiny9.Size = new Size(96, 96);
             StoredShiny9.SizeMode = PictureBoxSizeMode.Zoom;
             StoredShiny9.TabIndex = 8;
             StoredShiny9.TabStop = false;
             StoredShiny9.Click += Slot_Click;
+            StoredShiny9.MouseEnter += OnMouseHover;
+            // 
+            // btn_RemoveAll
+            // 
+            btn_RemoveAll.Location = new Point(108, 548);
+            btn_RemoveAll.Name = "btn_RemoveAll";
+            btn_RemoveAll.Size = new Size(96, 23);
+            btn_RemoveAll.TabIndex = 3;
+            btn_RemoveAll.Text = "Remove All";
+            btn_RemoveAll.UseVisualStyleBackColor = true;
+            btn_RemoveAll.Click += Btn_RemoveAll_Click;
+            // 
+            // btn_RemoveSelected
+            // 
+            btn_RemoveSelected.Location = new Point(6, 548);
+            btn_RemoveSelected.Name = "btn_RemoveSelected";
+            btn_RemoveSelected.Size = new Size(96, 23);
+            btn_RemoveSelected.TabIndex = 2;
+            btn_RemoveSelected.Text = "Remove";
+            btn_RemoveSelected.UseVisualStyleBackColor = true;
+            btn_RemoveSelected.Click += Btn_RemoveSelected_Click;
             // 
             // StoredShiny8
             // 
             StoredShiny8.BackgroundImageLayout = ImageLayout.None;
             StoredShiny8.BorderStyle = BorderStyle.FixedSingle;
-            StoredShiny8.Location = new Point(210, 124);
+            StoredShiny8.Location = new Point(108, 328);
             StoredShiny8.Name = "StoredShiny8";
             StoredShiny8.Size = new Size(96, 96);
             StoredShiny8.SizeMode = PictureBoxSizeMode.Zoom;
             StoredShiny8.TabIndex = 7;
             StoredShiny8.TabStop = false;
             StoredShiny8.Click += Slot_Click;
+            StoredShiny8.MouseEnter += OnMouseHover;
             // 
             // StoredShiny7
             // 
             StoredShiny7.BackgroundImageLayout = ImageLayout.None;
             StoredShiny7.BorderStyle = BorderStyle.FixedSingle;
-            StoredShiny7.Location = new Point(108, 124);
+            StoredShiny7.Location = new Point(6, 328);
             StoredShiny7.Name = "StoredShiny7";
             StoredShiny7.Size = new Size(96, 96);
             StoredShiny7.SizeMode = PictureBoxSizeMode.Zoom;
             StoredShiny7.TabIndex = 6;
             StoredShiny7.TabStop = false;
             StoredShiny7.Click += Slot_Click;
+            StoredShiny7.MouseEnter += OnMouseHover;
             // 
             // StoredShiny6
             // 
             StoredShiny6.BackgroundImageLayout = ImageLayout.None;
             StoredShiny6.BorderStyle = BorderStyle.FixedSingle;
-            StoredShiny6.Location = new Point(6, 124);
+            StoredShiny6.Location = new Point(108, 226);
             StoredShiny6.Name = "StoredShiny6";
             StoredShiny6.Size = new Size(96, 96);
             StoredShiny6.SizeMode = PictureBoxSizeMode.Zoom;
             StoredShiny6.TabIndex = 5;
             StoredShiny6.TabStop = false;
             StoredShiny6.Click += Slot_Click;
+            StoredShiny6.MouseEnter += OnMouseHover;
             // 
             // StoredShiny5
             // 
             StoredShiny5.BackgroundImageLayout = ImageLayout.None;
             StoredShiny5.BorderStyle = BorderStyle.FixedSingle;
-            StoredShiny5.Location = new Point(414, 22);
+            StoredShiny5.Location = new Point(6, 226);
             StoredShiny5.Name = "StoredShiny5";
             StoredShiny5.Size = new Size(96, 96);
             StoredShiny5.SizeMode = PictureBoxSizeMode.Zoom;
             StoredShiny5.TabIndex = 4;
             StoredShiny5.TabStop = false;
             StoredShiny5.Click += Slot_Click;
+            StoredShiny5.MouseEnter += OnMouseHover;
             // 
             // StoredShiny4
             // 
             StoredShiny4.BackgroundImageLayout = ImageLayout.None;
             StoredShiny4.BorderStyle = BorderStyle.FixedSingle;
-            StoredShiny4.Location = new Point(312, 22);
+            StoredShiny4.Location = new Point(108, 124);
             StoredShiny4.Name = "StoredShiny4";
             StoredShiny4.Size = new Size(96, 96);
             StoredShiny4.SizeMode = PictureBoxSizeMode.Zoom;
             StoredShiny4.TabIndex = 3;
             StoredShiny4.TabStop = false;
             StoredShiny4.Click += Slot_Click;
+            StoredShiny4.MouseEnter += OnMouseHover;
             // 
             // StoredShiny3
             // 
             StoredShiny3.BackgroundImageLayout = ImageLayout.None;
             StoredShiny3.BorderStyle = BorderStyle.FixedSingle;
-            StoredShiny3.Location = new Point(210, 22);
+            StoredShiny3.Location = new Point(6, 124);
             StoredShiny3.Name = "StoredShiny3";
             StoredShiny3.Size = new Size(96, 96);
             StoredShiny3.SizeMode = PictureBoxSizeMode.Zoom;
             StoredShiny3.TabIndex = 2;
             StoredShiny3.TabStop = false;
             StoredShiny3.Click += Slot_Click;
+            StoredShiny3.MouseEnter += OnMouseHover;
             // 
             // StoredShiny2
             // 
@@ -185,6 +242,7 @@ namespace ZAShinyStoragePlugin
             StoredShiny2.TabIndex = 1;
             StoredShiny2.TabStop = false;
             StoredShiny2.Click += Slot_Click;
+            StoredShiny2.MouseEnter += OnMouseHover;
             // 
             // StoredShiny1
             // 
@@ -197,58 +255,51 @@ namespace ZAShinyStoragePlugin
             StoredShiny1.TabIndex = 0;
             StoredShiny1.TabStop = false;
             StoredShiny1.Click += Slot_Click;
+            StoredShiny1.MouseEnter += OnMouseHover;
             // 
-            // btn_RemoveSelected
+            // pbMap
             // 
-            btn_RemoveSelected.Location = new Point(14, 234);
-            btn_RemoveSelected.Name = "btn_RemoveSelected";
-            btn_RemoveSelected.Size = new Size(121, 23);
-            btn_RemoveSelected.TabIndex = 2;
-            btn_RemoveSelected.Text = "Remove Selected";
-            btn_RemoveSelected.UseVisualStyleBackColor = true;
-            btn_RemoveSelected.Click += Btn_RemoveSelected_Click;
+            pbMap.BackColor = ColorTranslator.FromHtml("#738e94");
+            pbMap.Image = Properties.Resources.lumiose;
+            pbMap.SizeMode = PictureBoxSizeMode.Normal;
+            pbMap.Location = new Point(12, 12);
+            pbMap.Name = "pbMap";
+            pbMap.Size = new Size(550, 550);
+            pbMap.TabIndex = 2;
+            pbMap.TabStop = false;
+            pbMap.Paint += PbMap_Paint;
+            pbMap.MouseDown += PbMap_MouseDown;
+            pbMap.MouseMove += PbMap_MouseMove;
+            pbMap.MouseUp += PbMap_MouseUp;
+            pbMap.MouseWheel += PbMap_MouseWheel;
             // 
-            // btn_RemoveAll
+            // ShinyInfo
             // 
-            btn_RemoveAll.Location = new Point(141, 234);
-            btn_RemoveAll.Name = "btn_RemoveAll";
-            btn_RemoveAll.Size = new Size(121, 23);
-            btn_RemoveAll.TabIndex = 3;
-            btn_RemoveAll.Text = "Remove All";
-            btn_RemoveAll.UseVisualStyleBackColor = true;
-            btn_RemoveAll.Click += Btn_RemoveAll_Click;
+            ShinyInfo.AutoPopDelay = 30000;
+            ShinyInfo.InitialDelay = 750;
+            ShinyInfo.ReshowDelay = 1000;
             // 
-            // lbl_Details
+            // btnResetZoom
             // 
-            lbl_Details.AutoSize = true;
-            lbl_Details.Location = new Point(320, 234);
-            lbl_Details.Name = "lbl_Details";
-            lbl_Details.Size = new Size(179, 15);
-            lbl_Details.TabIndex = 4;
-            lbl_Details.Text = "Select a Pokemon to view details";
-            // 
-            // lbl_Status
-            // 
-            lbl_Status.AutoSize = true;
-            lbl_Status.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lbl_Status.Location = new Point(8, 273);
-            lbl_Status.Name = "lbl_Status";
-            lbl_Status.Size = new Size(125, 15);
-            lbl_Status.TabIndex = 5;
-            lbl_Status.Text = "Stored Shinies: 0 / 10";
+            btnResetZoom.Location = new Point(11, 559);
+            btnResetZoom.Name = "btnResetZoom";
+            btnResetZoom.Size = new Size(552, 26);
+            btnResetZoom.TabIndex = 3;
+            btnResetZoom.Text = "Reset Zoom";
+            btnResetZoom.UseVisualStyleBackColor = true;
+            btnResetZoom.Click += ResetMapZoom;
             // 
             // ShinyStorageForm
             // 
-            ClientSize = new Size(534, 412);
-            Controls.Add(lbl_Status);
-            Controls.Add(lbl_Details);
-            Controls.Add(btn_RemoveAll);
-            Controls.Add(btn_RemoveSelected);
+            ClientSize = new Size(791, 589);
+            Controls.Add(pbMap);
+            Controls.Add(btnResetZoom);
             Controls.Add(gB_StoredShiny);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             Name = "ShinyStorageForm";
             StartPosition = FormStartPosition.CenterParent;
             gB_StoredShiny.ResumeLayout(false);
+            gB_StoredShiny.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)StoredShiny10).EndInit();
             ((System.ComponentModel.ISupportInitialize)StoredShiny9).EndInit();
             ((System.ComponentModel.ISupportInitialize)StoredShiny8).EndInit();
@@ -259,8 +310,8 @@ namespace ZAShinyStoragePlugin
             ((System.ComponentModel.ISupportInitialize)StoredShiny3).EndInit();
             ((System.ComponentModel.ISupportInitialize)StoredShiny2).EndInit();
             ((System.ComponentModel.ISupportInitialize)StoredShiny1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbMap).EndInit();
             ResumeLayout(false);
-            PerformLayout();
 
         }
 
@@ -281,5 +332,8 @@ namespace ZAShinyStoragePlugin
         private Button btn_RemoveAll;
         private Label lbl_Details;
         private Label lbl_Status;
+        private ZoomablePictureBox pbMap;
+        private ToolTip ShinyInfo;
+        private Button btnResetZoom;
     }
 }

@@ -63,9 +63,49 @@ namespace ZAShinyStoragePlugin.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap lumiose {
+            get {
+                object obj = ResourceManager.GetObject("lumiose", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap lysandre_labs {
+            get {
+                object obj = ResourceManager.GetObject("lysandre_labs", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap shiny {
             get {
                 object obj = ResourceManager.GetObject("shiny", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap the_sewers_ch5 {
+            get {
+                object obj = ResourceManager.GetObject("the_sewers_ch5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap the_sewers_ch6 {
+            get {
+                object obj = ResourceManager.GetObject("the_sewers_ch6", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

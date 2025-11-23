@@ -10,7 +10,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="PKHeX.Core" Version="25.11.7" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\SpawnerLocations\LysandreLabs.json" />
+    <EmbeddedResource Include="Resources\SpawnerLocations\Main.json" />
+    <EmbeddedResource Include="Resources\SpawnerLocations\Sewers2.json" />
+    <EmbeddedResource Include="Resources\SpawnerLocations\Sewers1.json" />
   </ItemGroup>
 
   <ItemGroup>

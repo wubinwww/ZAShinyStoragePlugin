@@ -5,7 +5,7 @@ namespace ZAShinyStoragePlugin
 {
     public class ZAShinyStoragePlugin : IPlugin
     {
-        public string Name => "ZA Shiny Storage Manager";
+        public string Name => "Z-A Shiny Storage Viewer";
         public int Priority => 1;
         public static Form MainWindow { get; private set; } = null!;
         public ISaveFileProvider SaveFileEditor { get; private set; } = null!;
